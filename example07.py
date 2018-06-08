@@ -10,9 +10,14 @@ def main():
     # 创建谷歌Chrome浏览器内核
     driver = webdriver.Chrome()
     # 通过浏览器内核加载页面(可以加载动态生成的内容)
-    driver.get('https://www.taobao.com/markets/mm/mm2017')
+    driver.get('https://v.taobao.com/v/content/live?catetype=704&from=taonvlang')
     # driver.page_source获得的页面包含了JavaScript动态创建的内容
+
+
     soup = BeautifulSoup(driver.page_source, 'lxml')
+
+    # reps = requests.get('http://www.4399.com')
+    # soup = BeautifulSoup(reps.text,'lxml')
     all_images = soup.select('img[src]')
     for image in all_images:
         url = image.get('src')
@@ -22,7 +27,7 @@ def main():
             filename = url[url.rfind('/') + 1:]
             print(filename)
             resp = requests.get(url)
-            with open('c:/images/' + filename, 'wb') as f:
+            with open('./images/' + filename, 'wb') as f:
                 f.write(resp.content)
         except OSError:
             print(filename + '下载失败!')
